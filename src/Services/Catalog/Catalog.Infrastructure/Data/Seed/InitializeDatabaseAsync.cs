@@ -12,7 +12,6 @@ namespace Catalog.Infrastructure.Data.Seed
             if (!await session.Query<Brand>().AnyAsync())
             {
                 session.Store<Brand>(InitialData.Brands);
-                await session.SaveChangesAsync(cancellation);
             }
 
             foreach (var category in InitialData.Categories)

@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Domain.Repositories
 {
-    internal interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
     }
