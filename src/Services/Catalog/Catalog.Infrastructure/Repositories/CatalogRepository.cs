@@ -12,68 +12,58 @@ namespace Catalog.Infrastructure.Repositories
         }
 
         // ICategoryRepository
-        async Task<IEnumerable<Category>> ICategoryRepository.GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             return await _documentSession.Query<Category>().ToListAsync();
         }
 
         // IBrandRepository
-        async Task<IEnumerable<Brand>> IBrandRepository.GetAllBrandsAsync()
+        public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
         {
             return await _documentSession.Query<Brand>().ToListAsync();
         }
 
         // ICatalogItemRepository
 
-        async Task<IEnumerable<CatalogItem>> ICatalogItemRepository.GetAllCatalogItemsAsync()
+        public async Task<IEnumerable<CatalogItem>> GetAllCatalogItemsAsync()
         {
              return await _documentSession.Query<CatalogItem>().ToListAsync();
         }
 
-        async Task<CatalogItem?> ICatalogItemRepository.GetCatalogItemAsync(CatalogItem item)
+        public async Task<CatalogItem?> GetCatalogItemAsync(Guid id)
         {
-            return await _documentSession.Query<CatalogItem>().FirstOrDefaultAsync(i => i.Id == item.Id);
+            return await _documentSession.LoadAsync<CatalogItem>(id);
         }
 
-        async Task<IEnumerable<CatalogItem>> ICatalogItemRepository.GetCatalogItemsByBrandsAsync(string brandTitle)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByBrandsAsync(string brandTitle)
         {
-            return await _documentSession.Query<CatalogItem>().Where(x => x.Brand.Title == brandTitle).ToListAsync();
+            return await _documentSession.Query<CatalogItem>().Where(x => x.Brand != null && !String.IsNullOrEmpty(x.Brand.Title) 
+            && x.Brand.Title.Contains(brandTitle, StringComparison.OrdinalIgnoreCase)).ToListAsync();
         }
 
-        async Task<IEnumerable<CatalogItem>> ICatalogItemRepository.GetCatalogItemsByTitleAsync(string title)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByTitleAsync(string title)
         {
-            return await _documentSession.Query<CatalogItem>().Where(x => x.Title.Contains(title)).ToListAsync();
+            return await _documentSession.Query<CatalogItem>().Where(x => !String.IsNullOrEmpty(x.Title) 
+            && x.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
         }
-        async Task<CatalogItem> ICatalogItemRepository.CreateCatalogItemAsync(CatalogItem item)
+        public async Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
         {
             _documentSession.Store(item);
             await _documentSession.SaveChangesAsync();
             return item;
         }
 
-        async Task<bool> ICatalogItemRepository.DeleteCatalogItemAsync(Guid id)
+        public async Task<bool> DeleteCatalogItemAsync(Guid id)
         {
-            var existingItem = await _documentSession.Query<CatalogItem>().FirstOrDefaultAsync(x => x.Id == id);
-
-            if(existingItem == null) return false;
-
-            _documentSession.Delete(existingItem);
-
-            _documentSession.SaveChangesAsync();
-
+            _documentSession.Delete<CatalogItem>(id);
+            await _documentSession.SaveChangesAsync();
             return true;
         }
 
-        async Task<bool> ICatalogItemRepository.UpdateCatalogItemAsync(CatalogItem item)
+        public async Task<bool> UpdateCatalogItemAsync(CatalogItem item)
         {
-            var existingItem = await _documentSession.Query<CatalogItem>().FirstOrDefaultAsync(x => x.Id == item.Id);
-
-            if(existingItem == null) return false;
-
-            _documentSession.Update(existingItem);
-
-            _documentSession.SaveChangesAsync();
-
+            _documentSession.Store(item);
+            await _documentSession.SaveChangesAsync();
             return true;
         }
     }
