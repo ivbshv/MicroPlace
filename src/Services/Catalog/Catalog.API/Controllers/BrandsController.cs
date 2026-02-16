@@ -6,14 +6,12 @@ using Catalog.Application.Queries.BrandQueries;
 
 namespace Catalog.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BrandsController(IMediator mediator) : ControllerBase
+    public class BrandsController(IMediator mediator) : ApiController
     {
         [HttpGet]
         public async Task<ActionResult<GetBrandsResult>> GetBrand()
         {
-            return await mediator.Send(new GetBrandsQuery());
+            return await Mediator.Send(new GetBrandsQuery());
         }
     }
 }
