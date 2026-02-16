@@ -14,7 +14,7 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(GetBrandsResult),(int)HttpStatusCode.OK)]
         public async Task<ActionResult<GetBrandsResult>> GetBrand()
         {
-            var result =  Mediator.Send(new GetBrandsQuery());
+            var result = await Mediator.Send(new GetBrandsQuery());
             return Ok(result);
         }
     }
