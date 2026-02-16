@@ -11,7 +11,8 @@ namespace Catalog.API.Controllers
         [HttpGet]
         public async Task<ActionResult<GetBrandsResult>> GetBrand()
         {
-            return await Mediator.Send(new GetBrandsQuery());
+            var result =  Mediator.Send(new GetBrandsQuery());
+            return Ok(result);
         }
     }
 }
