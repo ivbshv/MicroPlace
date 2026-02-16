@@ -1,5 +1,8 @@
-﻿using Catalog.Application.Queries.BrandQueries;
+﻿using Asp.Versioning;
+using Catalog.Application.Queries.BrandQueries;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace Catalog.API;
 
@@ -11,16 +14,36 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
+        services.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+
+        })
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
+        
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(config =>
+        {
+            config.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Catalog API",
+                Version = "v1"
+            });
+        });
 
         var licenseKey = configuration.GetSection("Mediatr:LicenseKey").Value;
         var assembly = typeof(GetBrandsQuery).Assembly;
         services.AddMediatR(config =>
         {
             config.LicenseKey = licenseKey;
-            config.RegisterServicesFromAssemblies( assembly );
+            config.RegisterServicesFromAssemblies(assembly);
         });
         return services;
     }
