@@ -15,8 +15,8 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
     {
         public async Task<GetCatalogItemByTitleResult> Handle(GetCatalogItemByTitleQuery query, CancellationToken cancellationToken)
         {
-            var catalogItem = await catalogItemRepository.GetCatalogItemsByTitleAsync(query.Title);
-            var result = new GetCatalogItemByTitleResult(catalogItem);
+            var catalogItems = await catalogItemRepository.GetCatalogItemsByTitleAsync(query.Title);
+            var result = new GetCatalogItemByTitleResult(catalogItems);
             return result;
         }
     }
