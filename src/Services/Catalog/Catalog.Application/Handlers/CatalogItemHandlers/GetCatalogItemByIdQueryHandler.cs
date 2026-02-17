@@ -18,9 +18,6 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
             var catalogItem = await catalogItemRepository.GetCatalogItemAsync(query.Id);
             var result = new GetCatalogItemByIdResult(catalogItem);
             return result;
-            
-
-            
         }
     }
 }
