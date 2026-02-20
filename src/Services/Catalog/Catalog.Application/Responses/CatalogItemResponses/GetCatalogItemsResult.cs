@@ -7,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Responses.CatalogItemResponses
 {
-    public record GetCatalogItemsResult(IEnumerable<CatalogItem> CatalogItems)
-    {
-    }
+    public record GetCatalogItemsResult(IEnumerable<CatalogItem> CatalogItems);
 }
