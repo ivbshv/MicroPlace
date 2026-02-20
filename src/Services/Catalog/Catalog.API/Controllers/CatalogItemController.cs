@@ -57,5 +57,15 @@ namespace Catalog.API.Controllers
                 result
             );
         }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateCatalogItemResult), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<UpdateCatalogItemResult>> UpdateCatalogItem(
+            [FromBody] UpdateCatalogItemCommand command
+        )
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

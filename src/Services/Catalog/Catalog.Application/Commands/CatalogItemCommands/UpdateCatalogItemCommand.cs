@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Commands.CatalogItemCommands
 {
-    public record CreateCatalogItemCommand(
+    public record UpdateCatalogItemCommand(
+        Guid Id,
         string? Title,
         string? ShortDescription,
         string? FullDescription,
@@ -17,5 +18,5 @@ namespace Catalog.Application.Commands.CatalogItemCommands
         Brand? Brand,
         Category? Category,
         decimal Price
-    ) : IRequest<CreateCatalogItemResult>;
+    ) : IRequest<UpdateCatalogItemResult>;
 }
