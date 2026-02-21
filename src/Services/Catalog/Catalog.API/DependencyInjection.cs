@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Catalog.Application.Queries.BrandQueries;
+using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -43,6 +44,11 @@ public static class DependencyInjection
             });
 
             config.EnableAnnotations();
+
+            var basePath = AppContext.BaseDirectory;
+            config.IncludeXmlComments(
+                Path.Combine(basePath, "Catalog.Domain.xml")
+            );
         });
 
         var licenseKey = configuration.GetSection("Mediatr:LicenseKey").Value;
