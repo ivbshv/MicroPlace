@@ -1,4 +1,6 @@
-﻿using Catalog.Domain.Repositories;
+﻿using Catalog.Application.Responses.CatalogItemResponses;
+using Catalog.Domain.Repositories;
+using Catalog.Domain.Specifications;
 using Marten;
 using NetTopologySuite.Index.HPRtree;
 
@@ -46,6 +48,55 @@ namespace Catalog.Infrastructure.Repositories
             return await _documentSession.Query<CatalogItem>().Where(x => !String.IsNullOrEmpty(x.Title) 
             && x.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
         }
+        public async Task<Pagination<CatalogItem>> GetCatalogItemsAsync(QueryArgs args)
+        {
+            var allItems = _documentSession.Query<CatalogItem>().AsQueryable();
+
+            var brandId = args.BrandId;
+            if (brandId is not null)
+            {
+                allItems = allItems.Where(i => i.Brand != null && i.Brand.Id == brandId);
+            }
+
+            var categoryId = args.CategoryId;
+            if (categoryId is not null)
+            {
+                allItems = allItems.Where(i => i.Category != null && i.Category.Id == categoryId);
+            }
+
+            var search = args.Search;
+            if (!String.IsNullOrEmpty(search))
+            {
+                allItems = allItems.Where(
+                    i => i.Title != null
+                    && i.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
+                );
+            }
+
+            if (!string.IsNullOrEmpty(args.Sort))
+            {
+                allItems = args.Sort.ToLower() switch
+                {
+                    "price_desc" => allItems.OrderByDescending(i => i.Price),
+                    "price_asc" => allItems.OrderBy(i => i.Price),
+                    "title_desc" => allItems.OrderByDescending(i => i.Title),
+                    "title_asc" => allItems.OrderBy(i => i.Title),
+                    _ => allItems
+                };
+            }
+
+            var count = await allItems.CountAsync();
+
+            var items = await allItems.Skip((args.PageIndex - 1) * args.PageSize)
+                .Take(args.PageSize).ToListAsync();
+
+            return new Pagination<CatalogItem>(
+                args.PageIndex,
+                args.PageSize,
+                count,
+                items
+            );
+        }
         public async Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
         {
             _documentSession.Store(item);
@@ -66,5 +117,6 @@ namespace Catalog.Infrastructure.Repositories
             await _documentSession.SaveChangesAsync();
             return true;
         }
+
     }
 }
