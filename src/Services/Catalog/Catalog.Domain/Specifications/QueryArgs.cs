@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Catalog.Domain.Specifications
+﻿namespace Catalog.Domain.Specifications
 {
     public record QueryArgs(
         int PageIndex = 1,

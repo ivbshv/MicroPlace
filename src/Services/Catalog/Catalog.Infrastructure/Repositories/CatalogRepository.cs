@@ -1,8 +1,6 @@
-﻿using Catalog.Application.Responses.CatalogItemResponses;
-using Catalog.Domain.Repositories;
+﻿using Catalog.Domain.Repositories;
 using Catalog.Domain.Specifications;
 using Marten;
-using NetTopologySuite.Index.HPRtree;
 
 namespace Catalog.Infrastructure.Repositories
 {

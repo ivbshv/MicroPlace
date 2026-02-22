@@ -1,8 +1,6 @@
 ﻿using Catalog.Application.Queries.CatalogItemQueries;
 using Catalog.Application.Responses.CatalogItemResponses;
-using Catalog.Domain.Entities;
 using Catalog.Domain.Repositories;
-using Catalog.Domain.Specifications;
 using MediatR;
 
 namespace Catalog.Application.Handlers.CatalogItemHandlers

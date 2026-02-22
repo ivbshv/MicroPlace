@@ -1,9 +1,6 @@
 ﻿using Asp.Versioning;
 using Catalog.Application.Queries.BrandQueries;
-using JasperFx.Core;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 namespace Catalog.API;
 
