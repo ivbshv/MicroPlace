@@ -4,26 +4,12 @@ using Marten;
 
 namespace Catalog.Infrastructure.Repositories
 {
-    public class CatalogRepository : IBrandRepository, ICategoryRepository, ICatalogItemRepository
+    public class CatalogItemRepository : ICatalogItemRepository
     {
         private readonly IDocumentSession _documentSession;
-        public CatalogRepository(IDocumentSession session) {
+        public CatalogItemRepository(IDocumentSession session) {
             _documentSession = session;
         }
-
-        // ICategoryRepository
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(CancellationToken cancellationToken)
-        {
-            return await _documentSession.Query<Category>().ToListAsync(cancellationToken);
-        }
-
-        // IBrandRepository
-        public async Task<IEnumerable<Brand>> GetAllBrandsAsync(CancellationToken cancellationToken)
-        {
-            return await _documentSession.Query<Brand>().ToListAsync(cancellationToken);
-        }
-
-        // ICatalogItemRepository
 
         public async Task<IEnumerable<CatalogItem>> GetAllCatalogItemsAsync(CancellationToken cancellationToken)
         {
