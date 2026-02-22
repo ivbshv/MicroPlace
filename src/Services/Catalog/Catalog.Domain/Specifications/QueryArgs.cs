@@ -27,14 +27,14 @@
         /// - price_asc - по цене по возрастанию
         /// - price_desc - по цене по убыванию
         /// - title_asc - по названию по возрастанию
-        /// - titie_desc - по названию по убыванию
+        /// - title_desc - по названию по убыванию
         /// </summary>
         public string? Sort { get; init; }
 
         /// <summary>
         /// Поисковый запрос для фильтрации товаров по названию или описанию
         /// </summary>
-        public string Search { get; init; }
+        public string? Search { get; init; }
         public int PageSize { get; init; } = PageSize > MaxPageSize ? MaxPageSize : PageSize;
     }
 }

@@ -1,5 +1,5 @@
 ﻿// global usings
 
-using Catalog.API;
-using Catalog.Infrastructure;
-using Catalog.Application;
+global using Catalog.API;
+global using Catalog.Infrastructure;
+global using Catalog.Application;

@@ -10,7 +10,7 @@ namespace Catalog.Application.Handlers.Categoryhandlers
     {
         public async Task<GetCategoriesResult> Handle(GetCategoriesQuery query, CancellationToken cancellationToken)
         {
-            IEnumerable<Category> categories = await categoryRepository.GetAllCategoriesAsync();
+            IEnumerable<Category> categories = await categoryRepository.GetAllCategoriesAsync(cancellationToken);
             GetCategoriesResult result = new GetCategoriesResult(categories);
             return result;
         }

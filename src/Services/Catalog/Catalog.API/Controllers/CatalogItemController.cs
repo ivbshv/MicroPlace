@@ -1,16 +1,12 @@
 ﻿using Catalog.Application.Commands.CatalogItemCommands;
-using Catalog.Application.Queries.BrandQueries;
 using Catalog.Application.Queries.CatalogItemQueries;
-using Catalog.Application.Responses.BrandResponses;
 using Catalog.Application.Responses.CatalogItemResponses;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace Catalog.API.Controllers
 {
-    public class CatalogItemController(IMediator mediator) : ApiController
+    public class CatalogItemController() : ApiController
     {
         [HttpGet]
         [ProducesResponseType(typeof(GetCatalogItemsResult), (int)HttpStatusCode.OK)]
@@ -36,7 +32,7 @@ namespace Catalog.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("title/{brandTitle}")]
+        [HttpGet("brand/{brandTitle}")]
         [ProducesResponseType(typeof(GetCatalogItemByBrandTitleResult), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<GetCatalogItemByBrandTitleResult>> GetByBrandTitle(string brandTitle)
         {

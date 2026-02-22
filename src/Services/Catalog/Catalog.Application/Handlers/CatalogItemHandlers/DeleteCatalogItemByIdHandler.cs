@@ -10,14 +10,14 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
     {
         public async Task<DeleteCatalogItemByIdResult> Handle(DeleteCatalogItemByIdCommand command, CancellationToken cancellationToken)
         {
-            var existingItem = await catalogItemRepository.GetCatalogItemAsync(command.Id);
+            var existingItem = await catalogItemRepository.GetCatalogItemAsync(command.Id, cancellationToken);
 
             if (existingItem is null)
             {
                 return new DeleteCatalogItemByIdResult(false);
             }
 
-            bool isSuccess = await catalogItemRepository.DeleteCatalogItemAsync(command.Id);
+            bool isSuccess = await catalogItemRepository.DeleteCatalogItemAsync(command.Id, cancellationToken);
             return new DeleteCatalogItemByIdResult(isSuccess);
         }
     }

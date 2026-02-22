@@ -10,7 +10,7 @@ namespace Catalog.Application.Handlers.Brandhandlers
     {
         public async Task<GetBrandsResult> Handle(GetBrandsQuery query, CancellationToken cancellationToken)
         {
-            IEnumerable<Brand> brandList = await brandRepository.GetAllBrandsAsync();
+            IEnumerable<Brand> brandList = await brandRepository.GetAllBrandsAsync(cancellationToken);
 
             GetBrandsResult result = new GetBrandsResult(brandList);
 

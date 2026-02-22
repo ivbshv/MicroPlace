@@ -12,41 +12,41 @@ namespace Catalog.Infrastructure.Repositories
         }
 
         // ICategoryRepository
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync(CancellationToken cancellationToken)
         {
-            return await _documentSession.Query<Category>().ToListAsync();
+            return await _documentSession.Query<Category>().ToListAsync(cancellationToken);
         }
 
         // IBrandRepository
-        public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
+        public async Task<IEnumerable<Brand>> GetAllBrandsAsync(CancellationToken cancellationToken)
         {
-            return await _documentSession.Query<Brand>().ToListAsync();
+            return await _documentSession.Query<Brand>().ToListAsync(cancellationToken);
         }
 
         // ICatalogItemRepository
 
-        public async Task<IEnumerable<CatalogItem>> GetAllCatalogItemsAsync()
+        public async Task<IEnumerable<CatalogItem>> GetAllCatalogItemsAsync(CancellationToken cancellationToken)
         {
-             return await _documentSession.Query<CatalogItem>().ToListAsync();
+             return await _documentSession.Query<CatalogItem>().ToListAsync(cancellationToken);
         }
 
-        public async Task<CatalogItem?> GetCatalogItemAsync(Guid id)
+        public async Task<CatalogItem?> GetCatalogItemAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _documentSession.LoadAsync<CatalogItem>(id);
+            return await _documentSession.LoadAsync<CatalogItem>(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByBrandsAsync(string brandTitle)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByBrandsAsync(string brandTitle, CancellationToken cancellationToken)
         {
             return await _documentSession.Query<CatalogItem>().Where(x => x.Brand != null && !String.IsNullOrEmpty(x.Brand.Title) 
-            && x.Brand.Title.Contains(brandTitle, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+            && x.Brand.Title.Contains(brandTitle, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByTitleAsync(string title)
+        public async Task<IEnumerable<CatalogItem>> GetCatalogItemsByTitleAsync(string title, CancellationToken cancellationToken)
         {
             return await _documentSession.Query<CatalogItem>().Where(x => !String.IsNullOrEmpty(x.Title) 
-            && x.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync();
+            && x.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToListAsync(cancellationToken);
         }
-        public async Task<Pagination<CatalogItem>> GetCatalogItemsAsync(QueryArgs args)
+        public async Task<Pagination<CatalogItem>> GetCatalogItemsAsync(QueryArgs args, CancellationToken cancellationToken)
         {
             var allItems = _documentSession.Query<CatalogItem>().AsQueryable();
 
@@ -83,10 +83,10 @@ namespace Catalog.Infrastructure.Repositories
                 };
             }
 
-            var count = await allItems.CountAsync();
+            var count = await allItems.CountAsync(cancellationToken);
 
             var items = await allItems.Skip((args.PageIndex - 1) * args.PageSize)
-                .Take(args.PageSize).ToListAsync();
+                .Take(args.PageSize).ToListAsync(cancellationToken);
 
             return new Pagination<CatalogItem>(
                 args.PageIndex,
@@ -95,24 +95,24 @@ namespace Catalog.Infrastructure.Repositories
                 items
             );
         }
-        public async Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item)
+        public async Task<CatalogItem> CreateCatalogItemAsync(CatalogItem item, CancellationToken cancellationToken)
         {
             _documentSession.Store(item);
-            await _documentSession.SaveChangesAsync();
+            await _documentSession.SaveChangesAsync(cancellationToken);
             return item;
         }
 
-        public async Task<bool> DeleteCatalogItemAsync(Guid id)
+        public async Task<bool> DeleteCatalogItemAsync(Guid id, CancellationToken cancellationToken)
         {
             _documentSession.Delete<CatalogItem>(id);
-            await _documentSession.SaveChangesAsync();
+            await _documentSession.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public async Task<bool> UpdateCatalogItemAsync(CatalogItem item)
+        public async Task<bool> UpdateCatalogItemAsync(CatalogItem item, CancellationToken cancellationToken)
         {
             _documentSession.Store(item);
-            await _documentSession.SaveChangesAsync();
+            await _documentSession.SaveChangesAsync(cancellationToken);
             return true;
         }
 

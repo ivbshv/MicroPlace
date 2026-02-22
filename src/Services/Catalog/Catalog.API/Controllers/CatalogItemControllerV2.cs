@@ -2,7 +2,6 @@
 using Catalog.Application.Queries.CatalogItemQueries;
 using Catalog.Application.Responses.CatalogItemResponses;
 using Catalog.Domain.Specifications;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -12,7 +11,7 @@ namespace Catalog.API.Controllers
     [ApiVersion("2")]
     [ApiExplorerSettings(GroupName = "v2")]
     [Route("api/v{version:apiVersion}/CatalogItem")]
-    public class CatalogItemControllerV2(IMediator mediator) : ApiController
+    public class CatalogItemControllerV2() : ApiController
     {
         [HttpGet]
         [ProducesResponseType(typeof(GetCatalogItemsResultV2), (int)HttpStatusCode.OK)]

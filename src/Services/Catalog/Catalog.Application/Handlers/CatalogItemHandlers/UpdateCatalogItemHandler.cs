@@ -12,7 +12,7 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
     {
         public async Task<UpdateCatalogItemResult> Handle(UpdateCatalogItemCommand command, CancellationToken cancellationToken)
         {
-            var existingItem = await catalogItemRepository.GetCatalogItemAsync(command.Id);
+            var existingItem = await catalogItemRepository.GetCatalogItemAsync(command.Id, cancellationToken);
 
             if (existingItem is null)
             {
@@ -20,7 +20,7 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
             }
 
             var catalogItem = command.Adapt<CatalogItem>();
-            var isSuccess = await catalogItemRepository.UpdateCatalogItemAsync(catalogItem);
+            var isSuccess = await catalogItemRepository.UpdateCatalogItemAsync(catalogItem, cancellationToken);
             return new UpdateCatalogItemResult(isSuccess);
         }
     }

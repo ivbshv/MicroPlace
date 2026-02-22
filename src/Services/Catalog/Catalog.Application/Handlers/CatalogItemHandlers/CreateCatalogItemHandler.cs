@@ -14,7 +14,7 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
         {
             var catalogItem = command.Adapt<CatalogItem>();
             catalogItem.Id = Guid.NewGuid();
-            await catalogItemRepository.CreateCatalogItemAsync(catalogItem);
+            await catalogItemRepository.CreateCatalogItemAsync(catalogItem, cancellationToken);
             return new CreateCatalogItemResult(catalogItem.Id);
         }
     }

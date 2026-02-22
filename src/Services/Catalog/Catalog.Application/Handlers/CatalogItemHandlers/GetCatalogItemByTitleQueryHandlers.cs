@@ -10,7 +10,7 @@ namespace Catalog.Application.Handlers.CatalogItemHandlers
     {
         public async Task<GetCatalogItemByTitleResult> Handle(GetCatalogItemByTitleQuery query, CancellationToken cancellationToken)
         {
-            var catalogItems = await catalogItemRepository.GetCatalogItemsByTitleAsync(query.Title);
+            var catalogItems = await catalogItemRepository.GetCatalogItemsByTitleAsync(query.Title, cancellationToken);
             var result = new GetCatalogItemByTitleResult(catalogItems);
             return result;
         }
