@@ -1,4 +1,7 @@
-﻿namespace Basket.API
+﻿using Carter;
+using Marten;
+
+namespace Basket.API
 {
     public static class DependencyInjection
     {
@@ -8,6 +11,26 @@
             IConfiguration configuration 
         )
         {
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
+
+            services.AddCarter();
+
+            var assembly = typeof(Program).Assembly;
+            var licenseKey = configuration.GetSection("Mediatr:LicenseKey").Value;
+
+            services.AddMediatR(config =>
+            {
+                config.LicenseKey = licenseKey;
+                config.RegisterServicesFromAssemblies(assembly);
+            });
+
+            var connectionString = configuration.GetConnectionString("pgConnection")!;
+
+            services.AddMarten(options =>
+            {
+                options.Connection(connectionString);
+            }).UseLightweightSessions();
             return services;
         }
 
@@ -15,6 +38,10 @@
             this WebApplication app
         )
         {
+            app.MapCarter();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             return app;
         }
     }
