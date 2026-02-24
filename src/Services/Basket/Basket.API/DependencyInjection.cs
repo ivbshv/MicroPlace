@@ -43,6 +43,7 @@ namespace Basket.API
             this WebApplication app
         )
         {
+            app.MapGet("/", () => Results.Redirect("/swagger"));
             app.MapCarter();
             app.UseSwagger();
             app.UseSwaggerUI();
