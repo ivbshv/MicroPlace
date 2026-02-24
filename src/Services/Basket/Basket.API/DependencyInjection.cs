@@ -1,4 +1,6 @@
-﻿using Carter;
+﻿using Basket.API.Infrastructure;
+using Basket.API.Models;
+using Carter;
 using Marten;
 
 namespace Basket.API
@@ -30,7 +32,10 @@ namespace Basket.API
             services.AddMarten(options =>
             {
                 options.Connection(connectionString);
+                options.Schema.For<ShoppingCart>().Identity(x => x.AccountName);
             }).UseLightweightSessions();
+
+            services.AddScoped<ICartRepository, CartRepository>();
             return services;
         }
 
