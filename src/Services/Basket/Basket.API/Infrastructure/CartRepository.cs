@@ -1,4 +1,5 @@
-﻿using Basket.API.Models;
+﻿using Basket.API.Exceptions;
+using Basket.API.Models;
 using Marten;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +13,7 @@ namespace Basket.API.Infrastructure
 
             if (cart is null)
             {
-                throw new Exception($"Корзина для '{accountName}' не найдена");
+                throw new CartNotFoundException(accountName);
             }
 
             return cart;
@@ -24,7 +25,7 @@ namespace Basket.API.Infrastructure
 
             if (cart is null)
             {
-                throw new Exception($"Корзина для '{accountName}' не найдена");
+                throw new CartNotFoundException(accountName);
             }
 
             session.Delete<ShoppingCart>(accountName);

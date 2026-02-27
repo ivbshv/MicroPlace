@@ -1,6 +1,7 @@
 ﻿using Basket.API.Infrastructure;
 using Basket.API.Models;
 using Carter;
+using Common.Kernel.Exceptions.Handler;
 using Marten;
 
 namespace Basket.API
@@ -13,6 +14,9 @@ namespace Basket.API
             IConfiguration configuration 
         )
         {
+
+            services.AddExceptionHandler<CustomExceptionHandler>();
+            services.AddProblemDetails();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
@@ -43,6 +47,7 @@ namespace Basket.API
             this WebApplication app
         )
         {
+            app.UseExceptionHandler();
             app.MapGet("/", () => Results.Redirect("/swagger"));
             app.MapCarter();
             app.UseSwagger();
