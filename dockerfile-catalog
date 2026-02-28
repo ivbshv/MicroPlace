@@ -7,7 +7,7 @@
 
 # docker run -d \
 #   --name catalog.api \
-#   --network marketplace_default \
+#   --network microplace_default \
 #   -p 7201:8080 \
 #   -e ConnectionStrings__PgConnection="..." \
 #   -e MediatR__LicenseKey="..." \
