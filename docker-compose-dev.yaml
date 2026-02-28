@@ -4,11 +4,11 @@
 services:
   catalog_db:
     container_name: catalog-db-dev
-    image: postgres:18
+    image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345678
-      POSTGRES_DB: catalog-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=catalog-db
     restart: always
     ports:
       - "7101:5432"
@@ -17,17 +17,28 @@ services:
 
   basket_db:
     container_name: basket-db-dev
-    image: postgres:18
+    image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345678
-      POSTGRES_DB: basket-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=basket-db
     restart: always
     ports:
       - "7102:5432"
     volumes:
       - postgres_basket:/var/lib/postgresql/
 
+  basket_redis:
+    container_name: basket-redis-dev
+    image: redis
+    command: redis-server --requirepass "12345678" --protected-mode no
+    restart: always
+    ports:
+      - "7122:6379"
+    volumes:
+      - redis_basket:/data
+
 volumes:
   postgres_catalog:
   postgres_basket:
+  redis_basket:

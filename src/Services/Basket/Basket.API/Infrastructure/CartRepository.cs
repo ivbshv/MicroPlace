@@ -21,15 +21,19 @@ namespace Basket.API.Infrastructure
 
         public async Task<bool> RemoveCartAsync(string accountName, CancellationToken cancellationToken)
         {
-            var cart = await session.LoadAsync<ShoppingCart>(accountName, cancellationToken);
+            // Проверяем существование
+            var exists = await session.Query<ShoppingCart>()
+                .AnyAsync(x => x.AccountName == accountName, cancellationToken);
 
-            if (cart is null)
+            if (!exists)
             {
-                throw new CartNotFoundException(accountName);
+                return false;
             }
 
+            // Удаляем по ID (AccountName настроен как Identity)
             session.Delete<ShoppingCart>(accountName);
             await session.SaveChangesAsync(cancellationToken);
+
             return true;
         }
 

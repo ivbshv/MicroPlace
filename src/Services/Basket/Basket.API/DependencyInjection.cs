@@ -5,6 +5,8 @@ using Common.Kernel.Behaviors;
 using Common.Kernel.Exceptions.Handler;
 using FluentValidation;
 using Marten;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Basket.API
 {
@@ -44,7 +46,24 @@ namespace Basket.API
                 options.Schema.For<ShoppingCart>().Identity(x => x.AccountName);
             }).UseLightweightSessions();
 
+            var redisConnectionString = configuration.GetConnectionString("RedisConnection");
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = redisConnectionString;
+                options.InstanceName = "Cart";
+            });
+
+            //services.AddScoped<CartRepository>();
+            //services.AddScoped<ICartRepository>(provider =>
+
+            //    new RedisCartCacheRepository(
+            //        provider.GetRequiredService<CartRepository>(),
+            //        provider.GetRequiredService<IDistributedCache>()
+            //    )
+            //);
             services.AddScoped<ICartRepository, CartRepository>();
+            services.Decorate<ICartRepository, RedisCartCacheRepository>();
+
             return services;
         }
 
