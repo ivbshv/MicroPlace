@@ -1,7 +1,6 @@
 ﻿using Basket.API.Exceptions;
 using Basket.API.Models;
 using Marten;
-using Microsoft.Extensions.Logging;
 
 namespace Basket.API.Infrastructure
 {
@@ -21,19 +20,13 @@ namespace Basket.API.Infrastructure
 
         public async Task<bool> RemoveCartAsync(string accountName, CancellationToken cancellationToken)
         {
-            // Проверяем существование
-            var exists = await session.Query<ShoppingCart>()
-                .AnyAsync(x => x.AccountName == accountName, cancellationToken);
-
-            if (!exists)
+            var cart = await session.LoadAsync<ShoppingCart>(accountName, cancellationToken);
+            if(cart is null)
             {
-                return false;
+                throw new CartNotFoundException(accountName);
             }
-
-            // Удаляем по ID (AccountName настроен как Identity)
             session.Delete<ShoppingCart>(accountName);
-            await session.SaveChangesAsync(cancellationToken);
-
+            await session.SaveChangesAsync(cancellationToken);   
             return true;
         }
 

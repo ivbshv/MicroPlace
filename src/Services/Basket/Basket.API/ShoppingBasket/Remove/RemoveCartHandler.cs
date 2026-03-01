@@ -1,5 +1,4 @@
 ﻿using Basket.API.Infrastructure;
-using Basket.API.Models;
 using Common.Kernel.CQRS.Commands;
 
 namespace Basket.API.ShoppingBasket.Remove

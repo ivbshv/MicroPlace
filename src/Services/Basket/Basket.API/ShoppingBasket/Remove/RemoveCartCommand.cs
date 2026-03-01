@@ -1,6 +1,4 @@
-﻿using Basket.API.Models;
-using Common.Kernel.CQRS.Commands;
-using System.Windows.Input;
+﻿using Common.Kernel.CQRS.Commands;
 
 namespace Basket.API.ShoppingBasket.Remove
 {

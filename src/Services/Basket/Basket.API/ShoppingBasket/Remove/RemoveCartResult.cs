@@ -1,4 +1,4 @@
 ﻿namespace Basket.API.ShoppingBasket.Remove
 {
-    public record RemoveCartResult(bool isSuccess);
+    public record RemoveCartResult(bool IsSuccess);
 }
