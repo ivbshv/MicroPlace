@@ -3,6 +3,6 @@ builder.Services.AddApiServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseApiServices();
+await app.UseApiServices();
 
 app.Run();

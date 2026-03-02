@@ -1,4 +1,7 @@
-﻿namespace Promotion.Grpc
+﻿using Promotion.Grpc.Persistence.Extensions;
+using System.Threading.Tasks;
+
+namespace Promotion.Grpc
 {
     public static class DependencyInjection
     {
@@ -28,8 +31,11 @@
             return services;
         }
 
-        public static WebApplication UseApiServices(this WebApplication app)
+        public static async Task<WebApplication> UseApiServices(this WebApplication app)
         {
+            using var scope = app.Services.CreateScope();
+            var connection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
+            await DatabaseExtensions.SeedAsync(connection);
             app.MapGrpcReflectionService();
 
             app.MapGrpcService<GreeterService>();
