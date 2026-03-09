@@ -1,4 +1,5 @@
 ﻿using Promotion.Grpc.Persistence.Extensions;
+using Promotion.Grpc.Services;
 using System.Threading.Tasks;
 
 namespace Promotion.Grpc
@@ -38,7 +39,7 @@ namespace Promotion.Grpc
             await DatabaseExtensions.SeedAsync(connection);
             app.MapGrpcReflectionService();
 
-            app.MapGrpcService<GreeterService>();
+            app.MapGrpcService<PromoGrpcService>();
 
             return app;
         }
