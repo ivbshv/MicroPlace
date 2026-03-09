@@ -1,4 +1,5 @@
 ﻿using Promotion.Grpc.Persistence.Extensions;
+using Promotion.Grpc.Persistence.Repositories;
 using Promotion.Grpc.Services;
 using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace Promotion.Grpc
                 config.RegisterServicesFromAssemblies(assembly);
                 
             });
+            services.AddScoped<IPromoRepository, PromoRepository>();
 
             return services;
         }

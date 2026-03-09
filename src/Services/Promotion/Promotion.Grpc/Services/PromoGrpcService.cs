@@ -1,10 +1,15 @@
-﻿namespace Promotion.Grpc.Services
+﻿using MediatR;
+using Promotion.Grpc.UseCases.GetPromo;
+
+namespace Promotion.Grpc.Services
 {
-    public class PromoGrpcService : promoService.promoServiceBase
+    public class PromoGrpcService(IMediator mediator) : promoService.promoServiceBase
     {
-        public override Task<PromoModel> GetPromo(GetPromoRequest request, ServerCallContext context)
+        public override async Task<PromoModel> GetPromo(GetPromoRequest request, ServerCallContext context)
         {
-            return base.GetPromo(request, context);
+            var query = new GetPromoByCatalogItemIdQuery(request.CatalogItemId);
+            var result = await mediator.Send(query);
+            return result;
         }
     }
 }
