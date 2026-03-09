@@ -4,6 +4,7 @@ option csharp_namespace = "Promotion.Grpc.Protos";
 
 service promoService {
 	rpc GetPromo (GetPromoRequest) returns (PromoModel);
+	rpc CreatePromo(CreatePromoRequest) returns (CreatePromoResponse);
 }
 
 message GetPromoRequest {
@@ -15,4 +16,17 @@ message PromoModel {
 	string catalog_item_id = 2;
 	string title = 3;
 	double value = 4;
+}
+
+message CreatePromoRequest {
+	string catalog_item_id = 1;
+	string title = 2;
+	double value = 3;
+}
+
+message CreatePromoResponse {
+	string id = 1;
+	bool success = 2;
+	string description = 3;
+
 }

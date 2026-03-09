@@ -1,9 +1,4 @@
-﻿using Promotion.Grpc.Persistence.Extensions;
-using Promotion.Grpc.Persistence.Repositories;
-using Promotion.Grpc.Services;
-using System.Threading.Tasks;
-
-namespace Promotion.Grpc
+﻿namespace Promotion.Grpc
 {
     public static class DependencyInjection
     {

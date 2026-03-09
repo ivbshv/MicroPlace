@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Promotion.Grpc.UseCases.GetPromo;
-
-namespace Promotion.Grpc.Services
+﻿namespace Promotion.Grpc.Services
 {
     public class PromoGrpcService(IMediator mediator) : promoService.promoServiceBase
     {
@@ -9,6 +6,13 @@ namespace Promotion.Grpc.Services
         {
             var query = new GetPromoByCatalogItemIdQuery(request.CatalogItemId);
             var result = await mediator.Send(query);
+            return result;
+        }
+
+        public override async Task<CreatePromoResponse> CreatePromo(CreatePromoRequest request, ServerCallContext context)
+        {
+            var command = new CreatePromoCommand(request);
+            var result = await mediator.Send(command);
             return result;
         }
     }

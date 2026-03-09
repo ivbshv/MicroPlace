@@ -9,7 +9,7 @@ namespace Promotion.Grpc.Persistence.Repositories
 
             const string query = """
                 SELECT * FROM Promo
-                WHERE catalogItemId = @CatalogItemId
+                WHERE CatalogItemId = @catalogItemId
                 LIMIT 1;
             """;
 
@@ -22,5 +22,17 @@ namespace Promotion.Grpc.Persistence.Repositories
 
             return result;
         }
+
+        public async Task<bool> CreateAsync(Promo? promo, CancellationToken cancellationToken)
+        {
+            const string query = """
+                INSERT INTO Promo (Id,CatalogItemId, Title, Value)
+                VALUES (@Id, @CatalogItemId, @Title, @Value);
+            """;
+
+            var result = await connection.ExecuteAsync(query, promo);
+            return result > 0;
+        }
+
     }
 }
