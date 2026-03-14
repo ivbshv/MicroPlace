@@ -1,19 +1,27 @@
 ﻿namespace Promotion.Grpc.Services
 {
-    public class PromoGrpcService(IMediator mediator) : promoService.promoServiceBase
+    public class PromoGrpcService(IMediator mediator) : PromoService.PromoServiceBase
     {
         public override async Task<PromoModel> GetPromo(GetPromoRequest request, ServerCallContext context)
         {
             var query = new GetPromoByCatalogItemIdQuery(request.CatalogItemId);
-            var result = await mediator.Send(query);
+            var result = await mediator.Send(query, context.CancellationToken);
             return result;
         }
 
         public override async Task<CreatePromoResponse> CreatePromo(CreatePromoRequest request, ServerCallContext context)
         {
             var command = new CreatePromoCommand(request);
-            var result = await mediator.Send(command);
+            var result = await mediator.Send(command, context.CancellationToken);
             return result;
+        }
+
+        public override async Task<UpdatePromoResponse> UpdatePromo(UpdatePromoRequest request, ServerCallContext context)
+        {
+            var command = new UpdatePromoCommand(request);
+            var result = await mediator.Send(command, context.CancellationToken);
+            return result;
+
         }
     }
 }

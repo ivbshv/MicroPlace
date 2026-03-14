@@ -9,14 +9,10 @@
 
             if (promo is null)
             {
-                throw new RpcException(
-                    new Status(StatusCode.NotFound,
-                    $"Ничего для {query.CatalogItemId} не найдено"
-                ));
+                throw new NotFoundException("Promo", query.CatalogItemId);
             }
 
-            var result = promo.Adapt<PromoModel>();
-            return result;
+            return promo.Adapt<PromoModel>();
         }
     }
 }

@@ -18,6 +18,18 @@ global using Promotion.Grpc.Persistence.Extensions;
 global using Promotion.Grpc.Persistence.Repositories;
 global using Promotion.Grpc.Services;
 global using System.Threading.Tasks;
+global using Common.Kernel.CQRS.Commands;
+global using FluentValidation;
+global using Promotion.Grpc.Infrastructure.Interceptors;
+global using Grpc.Core.Interceptors;
+global using Common.Kernel.Exceptions.Handler;
+global using Promotion.Grpc.UseCases.UpdatePromo;
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,4 @@
-﻿using Common.Kernel.CQRS.Commands;
-
-namespace Promotion.Grpc.UseCases.CreatePromo
+﻿namespace Promotion.Grpc.UseCases.CreatePromo
 {
     public class CreatePromoCommandHandler(IPromoRepository repository) : ICommandHandler<CreatePromoCommand, CreatePromoResponse>
     {

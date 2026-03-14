@@ -4,15 +4,18 @@
     {
         public static IServiceCollection AddApiServices(
             this IServiceCollection services,
-            IConfiguration configuration
-        )
+            IConfiguration configuration)
         {
             var mySqlConnection = configuration.GetConnectionString("MySqlConnection");
 
             services.AddScoped<IDbConnection>(_ =>
                 new MySqlConnection(mySqlConnection));
 
-            services.AddGrpc();
+            services.AddGrpc(options =>
+            {
+                options.Interceptors.Add<ExceptionHandlingInterceptor>();
+            });
+
             services.AddGrpcReflection();
 
             var assembly = typeof(Program).Assembly;
@@ -22,8 +25,12 @@
             {
                 config.LicenseKey = licenseKey;
                 config.RegisterServicesFromAssemblies(assembly);
-                
             });
+
+            services.AddValidatorsFromAssembly(assembly);
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
             services.AddScoped<IPromoRepository, PromoRepository>();
 
             return services;
@@ -33,9 +40,10 @@
         {
             using var scope = app.Services.CreateScope();
             var connection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
-            await DatabaseExtensions.SeedAsync(connection);
-            app.MapGrpcReflectionService();
 
+            await DatabaseExtensions.SeedAsync(connection);
+
+            app.MapGrpcReflectionService();
             app.MapGrpcService<PromoGrpcService>();
 
             return app;
